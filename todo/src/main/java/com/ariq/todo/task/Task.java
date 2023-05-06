@@ -1,5 +1,11 @@
 package com.ariq.todo.task;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +29,13 @@ public class Task {
     private String task;
     private boolean isDone;
     private String priority;
+
+    @CreationTimestamp
+    @Column(nullable = false)
+    private Timestamp createdAt;
+
+    @UpdateTimestamp
+    private Timestamp updatedAt;
     
     public Task(@NotEmpty(message = "Task name cannot be empty") String task,
             @NotEmpty(message = "Task priority cannot be empty") String priority) {
@@ -37,6 +50,6 @@ public class Task {
     }    
 
     public TaskResponse convertToResponse() {
-        return new TaskResponse(this.id, this.task, this.isDone, this.priority);
+        return new TaskResponse(this.id, this.task, this.isDone, this.priority, this.createdAt, this.updatedAt);
     }
 }
